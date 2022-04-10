@@ -1,0 +1,29 @@
+$(NAME	Makefile	/^$(NAME)	:	$(OBJS) $/
+%.o	Makefile	/^%.o:		%.c$/
+.PHONY	Makefile	/^.PHONY:		all clean fclean re bonus$/
+AR	Makefile	/^AR		= ar rcs$/
+CC	Makefile	/^CC		= gcc$/
+CFLAGS	Makefile	/^CFLAGS = -Wall -Werror -Wextra$/
+FT_PRINTF_H	ft_printf.h	14
+NAME	Makefile	/^NAME	=	libftprintf.a$/
+OBJS	Makefile	/^OBJS		= ${SRCS:.c=.o}$/
+RM	Makefile	/^RM		= rm -rf$/
+SRCS	Makefile	/^SRCS	=	ft_printf.c		\\$/
+acaracteres	utils.c	/^static void	acaracteres(int o, int i, int n, char /
+all	Makefile	/^all	:		$(NAME)$/
+clean	Makefile	/^clean:	$/
+fclean	Makefile	/^fclean:		clean$/
+ft_formatter	utils.c	/^int	ft_formatter(va_list args, char c, int w_count/
+ft_ib	utils.c	/^char	*ft_ib(unsigned int n, char *base)$/
+ft_itoa	utils.c	/^char	*ft_itoa(int num)$/
+ft_itoa_unsig	utils.c	/^char	*ft_itoa_unsig(unsigned int n)$/
+ft_itoa_void	utils.c	/^char	*ft_itoa_void(unsigned long int n, char *base/
+ft_lp	utils.c	/^int	ft_lp(char *str, int size)$/
+ft_printchar	utils.c	/^int	ft_printchar(char c, int w_count)$/
+ft_printf	ft_printf.c	/^int	ft_printf(const char *fmt, ...)$/
+ft_printstring	utils.c	/^int	ft_printstring(char *str, int size, char calle/
+ft_printvoid	utils.c	/^int	ft_printvoid(void *ptr, int w_count)$/
+ft_write	write_util.c	/^int	ft_write(char *str, char task_type)$/
+min_neg	utils.c	/^static void	min_neg(int o, char *cad)$/
+printstr	utils.c	/^size_t	printstr(char *str)$/
+re	Makefile	/^re:			fclean all$/

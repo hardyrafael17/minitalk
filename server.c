@@ -1,8 +1,12 @@
-#include <signals.h>
-#incldue <stdio.h>
+#include <signal.h>
+#include <unistd.h>
+#include <stdio.h>
 
 int	main(void) {
-	printf("Hello World!\n"):
+	int		pid;
+
+	pid = getpid();
+	printf("pid = %d", pid);
 	return (0);
 }
 
