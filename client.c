@@ -4,26 +4,49 @@
 #include <string.h>
 #include <stdio.h>
 
-int	main(int argc, char **argv)
+int
+modulate(char *message, int receiver_pid)
 {
-	int	counter;
+	int		counter;
+	int		i;
+	char	wave;
+
+	while(message[i]++)
+	{	
+		wave = message[i];
+		counter = 9;
+		while(counter--)
+		{
+			if (wave % 2)
+			{
+				kill(receiver_pid, SIGUSR2);
+			}
+			else
+			{
+				kill(receiver_pid, SIGUSR1);
+			}
+			wave = wave <<;
+		}
+	}
+}
+
+
+int
+main(int argc, char **argv)
+{
+	int		counter;
+	int 	receiver_pid;
 
 	counter = 0;
-
+	
 	if (argc != 3 || !strlen(argv[2]))
 	{
 		printf("Argument count %d\n", argc);
 		return (1);
 	}
 
-	printf("sending to pid: %d\n", atoi(argv[2]));
-	//mt_kill(ft_atoi(argv[1]), argv[2]);
-	while (counter <= 10000)
-	{
-		kill(atoi(argv[2]), SIGUSR1);
-		printf("sending %d\n", atoi(argv[2]));
-		counter++;
-	}
+	receiver_pid = atoi(argv[1]);
+
 	printf("Dene!\n");
 	return (0);
 }
