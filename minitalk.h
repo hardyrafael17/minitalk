@@ -1,4 +1,4 @@
-//define headerfile (to prevent to autoinclude more than once)
+//define header file (to prevent to autoinclude more than once)
 #ifndef MINITALK.H
 #define MINITALK.H
 
@@ -12,14 +12,14 @@
 
 typedef struct server_status_t
 {
-	int		send_next;
-	int		resend;
-	int		pause;
-	size_t		message_length;
-	int		done;
-	int		server_pid;
-	char	*message;
-	int		stage;
+	int			send_next;
+	int			resend;
+	int			pause;
+	int			message_length;
+	int			done;
+	int			server_pid;
+	char		*message;
+	int			stage;
 }				status_t;
 
 typedef struct info_db_t 
@@ -32,7 +32,7 @@ typedef struct info_db_t
 	int			error;
 	int			stage;
 	int			shift_count;
-}					data;
+}				data;
 
 void	send_char(char *string, int message_length);
 void	resume(int signo, siginfo_t *info, void *context);

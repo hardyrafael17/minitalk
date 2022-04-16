@@ -1,21 +1,8 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: hjimenez <hjimenez@student.42madrid.com    +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2021/12/15 19:30:06 by hjimenez          #+#    #+#              #
-#    Updated: 2021/12/18 19:55:37 by hjimenez         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
+NAME	=	minitalk.a
 
-NAME	=	libftprintf.a
+SRCS	=	server.c server2.c client.c
 
-SRCS	=	ft_printf.c		\
-			utils.c
-
-OBJS		= ${SRCS:.c=.o}
+OBJS	= ${SRCS:.c=.o}
 
 CC		= gcc
 
