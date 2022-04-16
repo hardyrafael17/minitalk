@@ -1,22 +1,4 @@
-#include <signal.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-
-
-typedef struct info_db_t 
-{
-	int			coutner;
-	int			client_pid;
-	char 		*message;
-	int			message_length;
-	int			counter;
-	int			error;
-	int			stage;
-	int			shift_count;
-}					data;
+#include "minitalk.h"
 
 static data	operation;
 

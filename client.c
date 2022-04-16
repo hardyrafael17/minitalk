@@ -1,21 +1,4 @@
-#include <signal.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <string.h>
-#include <stdio.h>
-
-typedef struct server_status_t
-{
-	int		send_next;
-	int		resend;
-	int		pause;
-	size_t		message_length;
-	int		done;
-	int		server_pid;
-	char	*message;
-	int		stage;
-}				status_t;
-
+#include "minitalk.h"
 
 static status_t	operation;
 
