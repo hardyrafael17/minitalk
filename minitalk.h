@@ -1,3 +1,7 @@
+//define headerfile (to prevent to autoinclude more than once)
+#ifndef MINITALK.H
+#define MINITALK.H
+
 #include <sys/types.h>
 #include <signal.h>
 #include <string.h>
@@ -35,3 +39,5 @@ void	resume(int signo, siginfo_t *info, void *context);
 void	get_length (int signo, siginfo_t *info, void *context);
 void	alocate_mem (int signo, siginfo_t *info, void *context);
 void	get_message(int signo, siginfo_t *info, void *context);
+
+#endif

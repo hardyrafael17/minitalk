@@ -1,4 +1,4 @@
-client
-server
+tclient
+tserver
 .gitignore
-out
+a.out
