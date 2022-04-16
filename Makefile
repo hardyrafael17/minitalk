@@ -1,6 +1,6 @@
 NAME	=	minitalk.a
 
-SRCS	=	server.c server2.c client.c
+SRCS	=	server2.c client.c
 
 OBJS	= ${SRCS:.c=.o}
 

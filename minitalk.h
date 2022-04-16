@@ -1,6 +1,6 @@
 //define header file (to prevent to autoinclude more than once)
-#ifndef MINITALK.H
-#define MINITALK.H
+#ifndef MINITALK_H
+#define MINITALK_H
 
 #include <sys/types.h>
 #include <signal.h>
@@ -19,12 +19,15 @@ typedef struct server_status_t
 	int			done;
 	int			server_pid;
 	char		*message;
+	int			client_pid;
 	int			stage;
+	void		*context;
 }				status_t;
 
 typedef struct info_db_t 
 {
 	int			coutner;
+	void		*context;
 	int			client_pid;
 	char 		*message;
 	int			message_length;
@@ -38,6 +41,6 @@ void	send_char(char *string, int message_length);
 void	resume(int signo, siginfo_t *info, void *context);
 void	get_length (int signo, siginfo_t *info, void *context);
 void	alocate_mem (int signo, siginfo_t *info, void *context);
-void	get_message(int signo, siginfo_t *info, void *context);
+void	get_message (int signo, siginfo_t *info, void *context);
 
 #endif

@@ -5,6 +5,12 @@ static status_t	operation;
 void
 resume(int signo, siginfo_t *info, void *context)
 {
+		if(!operation.context)
+		{
+				operation.context = context;
+				operation.client_pid = info->si_pid;
+				operation.client_pid = signo;
+		}
 		printf("Resumig\n");
 		return;
 }
@@ -50,8 +56,6 @@ send_char(char *string, int message_length)
 int
 main (int argc, char **argv)
 {
-	int		counter;
-	int		i;
 	struct sigaction	s_sigaction;
 	struct sigaction	s_sigaction2;
 
@@ -67,7 +71,6 @@ main (int argc, char **argv)
 		printf("Argument count %d\n", argc);
 		return (1);
 	}
-	counter = 0;
 	//check that the server's pid is valid/// TO DO
 	operation.server_pid = atoi(argv[1]);
 	//	
