@@ -62,13 +62,14 @@ get_message(int signo, siginfo_t *info, void *context)
 		//fix later //TODO, error from compilation unused parameter
 		operation.context = context;
 	}
+	printf("Message ->%s\n", operation.message);
 }
 
 int
 main(void)
 {
 	//print server PID
-	printf("Server PID: %d\n", getpid());
+	printf("Server pid %d\n", getpid());
 	struct sigaction	s_sigaction;
 	struct sigaction	s_sigaction2;
 
@@ -84,9 +85,11 @@ main(void)
 		pause();
 	s_sigaction.sa_sigaction = &get_message;
 	s_sigaction2.sa_sigaction = &get_message;
+	sigaction(SIGUSR1, &s_sigaction, 0);
+	sigaction(SIGUSR2, &s_sigaction2, 0);
+	kill(operation.client_pid, SIGUSR1);
 	while(operation.stage == 1)
 	{
-		printf("Pausing on getting message\n");
 		pause();
 	}
 	return (0);

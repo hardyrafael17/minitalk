@@ -11,7 +11,6 @@ resume(int signo, siginfo_t *info, void *context)
 				operation.client_pid = info->si_pid;
 				operation.client_pid = signo;
 		}
-		printf("Resumig\n");
 		return;
 }
 
@@ -81,6 +80,7 @@ main (int argc, char **argv)
 	//sending message length to server
 	send_char(NULL, operation.message_length);
 	printf("Sent message's length was %d\n", operation.message_length);
+	pause();
 	//sending messae
 	send_char(operation.message, 0);
 	return(0);
