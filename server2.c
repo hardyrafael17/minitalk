@@ -18,9 +18,9 @@ get_length (int signo, siginfo_t *info, void *context)
 void
 alocate_mem (int signo, siginfo_t *info, void *context)
 {
-		printf("allocating mem, %d\n", operation.message_length);
+		printf("allocating mem, %d\n", operation.message_length + 1);
 		operation.message = calloc(operation.message_length + 1, sizeof(char));
-		printf("Done!\n");
+		printf("Done allocating memory!\n");
 		operation.stage++;
 		operation.client_pid = info->si_pid;
 		///TODO
@@ -30,7 +30,6 @@ alocate_mem (int signo, siginfo_t *info, void *context)
 		//fix later //TODO, error from compilation unused parameter
 		operation.context = context;
 	}
-	kill(info->si_pid, SIGUSR2);
 }
 
 void
@@ -83,13 +82,17 @@ main(void)
 	sigaction(SIGUSR2, &s_sigaction2, 0);
 	while(operation.stage == 0)
 		pause();
+
 	s_sigaction.sa_sigaction = &get_message;
 	s_sigaction2.sa_sigaction = &get_message;
 	sigaction(SIGUSR1, &s_sigaction, 0);
 	sigaction(SIGUSR2, &s_sigaction2, 0);
-	kill(operation.client_pid, SIGUSR1);
+	printf("Before getting message\n");
+
 	while(operation.stage == 1)
 	{
+		kill(operation.client_pid, SIGUSR1);
+		printf("sending first get message request to %d\n", operation.client_pid);
 		pause();
 	}
 	return (0);

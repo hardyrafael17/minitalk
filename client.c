@@ -18,36 +18,42 @@ void
 send_char(char *string, int message_length)
 {
 	int		j;
+	int		i;
+
 	j = 0;
-	while(string &&string[j++])
+	while(string && string[j++])
 	{
-		int i;
+		printf("Sending byte\n");
 		i = 8;
 		while (i--)
 		{
-			if (string[j] >> i & 1)
+			if (string[j] >> i && 1)
 				kill(operation.server_pid, SIGUSR2);
 			else
 				kill(operation.server_pid, SIGUSR1);
 			pause();
 		}
+
+	}
+	if(string && !message_length)
+	{
 		//send 0
+		printf("Sending end of string\n");
 		i = 8;
 		while(i--)
 		{
+				printf("sending bit\n");
 				kill(operation.server_pid, SIGUSR1);
 				pause();
 		}
 		return;
 	}
-	printf("sending count\n");
 	while(message_length--)
 	{
 		kill(operation.server_pid, SIGUSR1);
 		pause();
 	}
 	//done sending message length
-	printf("Done sending count\n");
 	kill(operation.server_pid, SIGUSR2);
 	return;
 }
@@ -70,18 +76,18 @@ main (int argc, char **argv)
 		printf("Argument count %d\n", argc);
 		return (1);
 	}
-	//check that the server's pid is valid/// TO DO
+	//check that the server's pid is valid/// TODO
 	operation.server_pid = atoi(argv[1]);
 	//	
 	operation.message = argv[2];
 	operation.message_length = strlen(operation.message);
-	//confirming length
-	printf("Message length is %d\n", operation.message_length);
 	//sending message length to server
 	send_char(NULL, operation.message_length);
-	printf("Sent message's length was %d\n", operation.message_length);
+	printf("Sent message's length was %d\n Pausing...", operation.message_length);
 	pause();
 	//sending messae
+	printf("Sending message \n");
 	send_char(operation.message, 0);
+	printf("Done sending message\n");
 	return(0);
 }

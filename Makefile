@@ -38,6 +38,6 @@ excecutable: all
 			$(CC) client.o $(XFLAGS) tclient && $(CC) server2.o $(XFLAGS) tserver
 
 vim: excecutable
-			echo "compliation completed"
+			@echo "compliation completed"
 
 .PHONY:		all clean fclean re bonus
