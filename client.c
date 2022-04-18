@@ -83,7 +83,6 @@ main (int argc, char **argv)
 	operation.message_length = strlen(operation.message);
 	//sending message length to server
 	send_char(NULL, operation.message_length);
-	printf("Sent message's length was %d\n Pausing...", operation.message_length);
 	pause();
 	//sending messae
 	printf("Sending message \n");

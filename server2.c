@@ -38,30 +38,28 @@ get_message(int signo, siginfo_t *info, void *context)
 
 		if(signo == SIGUSR2)
 		{ 
-				*(operation.message + operation.counter) = *(operation.message + operation.counter) << 1;		
-				operation.shift_count++;
+		//	*(operation.message + operation.counter) = *(operation.message + operation.counter) << 1;		
+			printf("bit 1\n");
 		} else {
-				operation.shift_count++;
+				//operation.shift_count++;
+			printf("bit 1\n");
 		}
 		if (operation.shift_count == 8)
 		{
 				if(operation.message[operation.counter] == '\0')
 				{
 						operation.stage++;
-						kill(info->si_pid, SIGUSR2);
 						return;
 				}
 				operation.shift_count = 0;
 				operation.coutner++;
 		}
-		kill(info->si_pid, SIGUSR1);
 	if(!operation.client_pid && signo)
 	{
 		operation.client_pid = (int) info->si_pid;
 		//fix later //TODO, error from compilation unused parameter
 		operation.context = context;
 	}
-	printf("Message ->%s\n", operation.message);
 }
 
 int
@@ -87,13 +85,13 @@ main(void)
 	s_sigaction2.sa_sigaction = &get_message;
 	sigaction(SIGUSR1, &s_sigaction, 0);
 	sigaction(SIGUSR2, &s_sigaction2, 0);
-	printf("Before getting message\n");
+	printf("Before getting message, operation stage is = %d\n", operation.stage);
 
 	while(operation.stage == 1)
 	{
 		kill(operation.client_pid, SIGUSR1);
-		printf("sending first get message request to %d\n", operation.client_pid);
 		pause();
 	}
+	printf("message ->>%s\n", operation.message);
 	return (0);
 }

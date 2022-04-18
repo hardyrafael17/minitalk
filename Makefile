@@ -37,7 +37,7 @@ re:			fclean all
 excecutable: all
 			$(CC) client.o $(XFLAGS) tclient && $(CC) server2.o $(XFLAGS) tserver
 
-vim: excecutable
-			@echo "compliation completed"
+vim: 
+			gcc client.c -o tclient && gcc server2.c -o tserver && echo "compliation completed"
 
 .PHONY:		all clean fclean re bonus
