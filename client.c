@@ -14,7 +14,6 @@ void	send_singal(int type)
 			{
 				if(!kill(operation.server_pid, SIGUSR2))
 				{
-					printf(">>> %d <<\n", operation.server_pid);
 					lock = 0;
 				}
 			}	
@@ -25,12 +24,10 @@ void	send_singal(int type)
 			{
 				if(!kill(operation.server_pid, SIGUSR1))
 				{
-					printf(">>> %d << %d\n", operation.server_pid, type);
 					lock = 0;
 				}
 			}	
 		}
-		printf("signal sent %d \n", type);
 }
 
 void
@@ -115,6 +112,7 @@ main (int argc, char **argv)
 	operation.message = argv[2];
 	operation.message_length = strlen(operation.message);
 	//sending message length to server
+	//print server PID
 	send_char(NULL, operation.message_length);
 	pause();
 	//sending messae
