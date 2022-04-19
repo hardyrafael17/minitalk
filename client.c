@@ -1,6 +1,37 @@
 #include "minitalk.h"
+//client
 
 static status_t	operation;
+
+void	send_singal(int type)
+{
+		int	lock;
+
+		lock = 1;
+		if(type && lock)
+	   	{
+			while (type && lock)
+			{
+				if(!kill(operation.server_pid, SIGUSR2))
+				{
+					printf(">>> %d <<\n", operation.server_pid);
+					lock = 0;
+				}
+			}	
+		}
+		else
+		{
+			while (lock)
+			{
+				if(!kill(operation.server_pid, SIGUSR1))
+				{
+					printf(">>> %d << %d\n", operation.server_pid, type);
+					lock = 0;
+				}
+			}	
+		}
+		printf("signal sent %d \n", type);
+}
 
 void
 resume(int signo, siginfo_t *info, void *context)
@@ -21,40 +52,42 @@ send_char(char *string, int message_length)
 	int		i;
 
 	j = 0;
-	while(string && string[j++])
+	while(string && string[j])
 	{
-		printf("Sending byte\n");
 		i = 8;
 		while (i--)
 		{
-			if (string[j] >> i && 1)
-				kill(operation.server_pid, SIGUSR2);
+			if (string[j] >> i & 1)
+			{
+				send_singal(1);
+			}
 			else
-				kill(operation.server_pid, SIGUSR1);
+			{
+				send_singal(0);
+			}
 			pause();
 		}
-
+		++j;
 	}
 	if(string && !message_length)
 	{
 		//send 0
-		printf("Sending end of string\n");
 		i = 8;
 		while(i--)
 		{
-				printf("sending bit\n");
-				kill(operation.server_pid, SIGUSR1);
+				send_singal(0);
 				pause();
 		}
 		return;
 	}
+	// Send message length
 	while(message_length--)
 	{
-		kill(operation.server_pid, SIGUSR1);
+		send_singal(0);
 		pause();
 	}
-	//done sending message length
-	kill(operation.server_pid, SIGUSR2);
+	send_singal(1);
+	pause();
 	return;
 }
 
@@ -85,7 +118,6 @@ main (int argc, char **argv)
 	send_char(NULL, operation.message_length);
 	pause();
 	//sending messae
-	printf("Sending message \n");
 	send_char(operation.message, 0);
 	printf("Done sending message\n");
 	return(0);

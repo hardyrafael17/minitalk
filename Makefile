@@ -14,30 +14,30 @@ CFLAGS = -Wall -Werror -Wextra
 
 XFLAGS = -o
 
-RUN_FLAGS = "Hola mundo Hola mundo ola mundo HHola mundo Hola mundo ola mundo ola mundo Hola mundo ola mundo"
-
 all	:		$(NAME)
 
 $(NAME)	:	$(OBJS) 
-			$(AR) $(NAME) $(OBJS)
+			@$(AR) $(NAME) $(OBJS)
 
 %.o:		%.c
-			$(CC) $(CFLAGS) -c $< -o $@
+			@$(CC) $(CFLAGS) -c $< -o $@
 
 clean:	
-			$(RM) ${OBJS}
+			@$(RM) ${OBJS}
 
 fclean:		clean
-			$(RM) $(NAME)
+			@$(RM) $(NAME)
 
 re:			fclean all
 
 #personal rules
 
-excecutable: all
-			$(CC) client.o $(XFLAGS) tclient && $(CC) server2.o $(XFLAGS) tserver
+client: 
+			gcc client.c -o tclient.o
 
-vim: 
-			gcc client.c -o tclient && gcc server2.c -o tserver && echo "compliation completed"
+server:
+			gcc server.c -o tserver.o
+
+k: fclean client server
 
 .PHONY:		all clean fclean re bonus

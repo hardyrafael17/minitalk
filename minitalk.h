@@ -27,6 +27,7 @@ typedef struct server_status_t
 typedef struct info_db_t 
 {
 	int			coutner;
+	int			server_pid;
 	void		*context;
 	int			client_pid;
 	char 		*message;
@@ -37,6 +38,7 @@ typedef struct info_db_t
 	int			shift_count;
 }				data;
 
+void	send_singal(int type);
 void	send_char(char *string, int message_length);
 void	resume(int signo, siginfo_t *info, void *context);
 void	get_length (int signo, siginfo_t *info, void *context);
