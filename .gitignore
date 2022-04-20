@@ -3,4 +3,5 @@ tserver
 .gitignore
 a.out
 minitalk.a
-server2.o
+tserver.o
+tclient.o

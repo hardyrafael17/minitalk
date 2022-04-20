@@ -1,65 +1,92 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   client.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hardy <hardy@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/04/20 19:17:39 by hardy             #+#    #+#             */
+/*   Updated: 2022/04/20 19:43:25 by hardy            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minitalk.h"
 
-static status_t	operation;
+static t_data	g_operation;
 
-void
-resume(int signo, siginfo_t *info, void *context)
+int
+	send_singal(int type)
 {
-		if(!operation.context)
+	int	lock;
+
+	lock = 1;
+	if (type && lock)
+	{
+		while (type && lock)
 		{
-				operation.context = context;
-				operation.client_pid = info->si_pid;
-				operation.client_pid = signo;
-		}
-		return;
+			if (!kill(g_operation.server_pid, SIGUSR2))
+			{
+				lock = 0;
+			}
+		}	
+	}
+	else
+	{
+		while (lock)
+		{
+			if (!kill(g_operation.server_pid, SIGUSR1))
+			{
+				lock = 0;
+			}
+		}	
+	}
+	return (1);
 }
 
 void
-send_char(char *string, int message_length)
+	resume(int signo, siginfo_t *info, void *context)
 {
-	int		j;
-	int		i;
-
-	j = 0;
-	while(string && string[j++])
+	if (!g_operation.context)
 	{
-		printf("Sending byte\n");
-		i = 8;
-		while (i--)
+		g_operation.context = context;
+		g_operation.client_pid = info->si_pid;
+				g_operation.client_pid = signo;
+	}
+	return ;
+}
+
+void
+	send_char(char *string, int message_length)
+{
+	while (string && string[g_operation.counter])
+	{
+		g_operation.shift_count = 8;
+		while (g_operation.shift_count--)
 		{
-			if (string[j] >> i && 1)
-				kill(operation.server_pid, SIGUSR2);
+			if (string[g_operation.counter] >> g_operation.shift_count & 1)
+				send_singal(1);
 			else
-				kill(operation.server_pid, SIGUSR1);
+				send_singal(0);
 			pause();
 		}
-
+		++g_operation.counter;
 	}
-	if(string && !message_length)
+	if (string && !message_length)
 	{
-		//send 0
-		printf("Sending end of string\n");
-		i = 8;
-		while(i--)
-		{
-				printf("sending bit\n");
-				kill(operation.server_pid, SIGUSR1);
-				pause();
-		}
-		return;
+		g_operation.shift_count = 8;
+		while (g_operation.shift_count-- && send_singal(0))
+			pause();
+		return ;
 	}
-	while(message_length--)
-	{
-		kill(operation.server_pid, SIGUSR1);
+	while (message_length-- && send_singal(0))
 		pause();
-	}
-	//done sending message length
-	kill(operation.server_pid, SIGUSR2);
-	return;
+	send_singal(1);
+	pause();
+	return ;
 }
 
 int
-main (int argc, char **argv)
+	main(int argc, char **argv)
 {
 	struct sigaction	s_sigaction;
 	struct sigaction	s_sigaction2;
@@ -70,23 +97,16 @@ main (int argc, char **argv)
 	s_sigaction2.sa_flags = SA_SIGINFO;
 	sigaction(SIGUSR1, &s_sigaction, 0);
 	sigaction(SIGUSR2, &s_sigaction2, 0);
-
 	if (argc != 3 || !strlen(argv[2]))
 	{
 		printf("Argument count %d\n", argc);
 		return (1);
 	}
-	//check that the server's pid is valid/// TODO
-	operation.server_pid = atoi(argv[1]);
-	//	
-	operation.message = argv[2];
-	operation.message_length = strlen(operation.message);
-	//sending message length to server
-	send_char(NULL, operation.message_length);
+	g_operation.server_pid = atoi(argv[1]);
+	g_operation.message = argv[2];
+	g_operation.message_length = strlen(g_operation.message);
+	send_char(NULL, g_operation.message_length);
 	pause();
-	//sending messae
-	printf("Sending message \n");
-	send_char(operation.message, 0);
-	printf("Done sending message\n");
-	return(0);
+	send_char(g_operation.message, 0);
+	return (0);
 }
