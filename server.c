@@ -110,21 +110,15 @@ int
 	sigaction(SIGUSR2, &s_sigaction2, 0);
 	printf("Server PID %d\n", getpid());
 	fflush(stdout);
-	while (g_operation.stage == 0)
-	{
+	while (g_operation.stage == 0 && send_singal(0))
 		pause();
-		send_singal(0);
-	}
 	s_sigaction.sa_sigaction = &get_message;
 	s_sigaction2.sa_sigaction = &get_message;
 	sigaction(SIGUSR1, &s_sigaction, 0);
 	sigaction(SIGUSR2, &s_sigaction2, 0);
 	usleep(400);
-	while (g_operation.stage == 1)
-	{
-		send_singal(0);
+	while (g_operation.stage == 1 && send_singal(0))
 		pause();
-	}
 	printf("message ->%s\n", g_operation.message);
 	send_singal(0);
 	return (0);
