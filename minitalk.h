@@ -1,48 +1,43 @@
-//define header file (to prevent to autoinclude more than once)
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minitalk.h                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hardy <hardy@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/04/20 18:42:55 by hardy             #+#    #+#             */
+/*   Updated: 2022/04/20 19:36:55 by hardy            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINITALK_H
-#define MINITALK_H
+# define MINITALK_H
 
-#include <sys/types.h>
-#include <signal.h>
-#include <string.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <string.h>
-#include <stdio.h>
+# include <sys/types.h>
+# include <signal.h>
+# include <string.h>
+# include <stdlib.h>
+# include <unistd.h>
+# include <string.h>
+# include <stdio.h>
 
-typedef struct server_status_t
+typedef struct s_operation_db
 {
-	int			send_next;
-	int			resend;
-	int			pause;
-	int			message_length;
-	int			done;
-	int			server_pid;
-	char		*message;
-	int			client_pid;
-	int			stage;
-	void		*context;
-}				status_t;
+	int		server_pid;
+	void	*context;
+	int		client_pid;
+	char	*message;
+	int		message_length;
+	int		counter;
+	int		stage;
+	int		shift_count;
+}			t_data;
 
-typedef struct info_db_t 
-{
-	int			coutner;
-	int			server_pid;
-	void		*context;
-	int			client_pid;
-	char 		*message;
-	int			message_length;
-	int			counter;
-	int			error;
-	int			stage;
-	int			shift_count;
-}				data;
-
-void	send_singal(int type);
+int		send_singal(int type);
 void	send_char(char *string, int message_length);
 void	resume(int signo, siginfo_t *info, void *context);
-void	get_length (int signo, siginfo_t *info, void *context);
-void	alocate_mem (int signo, siginfo_t *info, void *context);
-void	get_message (int signo, siginfo_t *info, void *context);
+void	get_length(int signo, siginfo_t *info, void *context);
+void	alocate_mem(int signo, siginfo_t *info, void *context);
+void	get_message(int signo, siginfo_t *info, void *context);
 
 #endif
