@@ -12,37 +12,6 @@
 
 #include "minitalk.h"
 
-static t_data	g_operation;
-
-int
-	send_singal(int type)
-{
-	int	lock;
-
-	lock = 1;
-	if (type && lock)
-	{
-		while (type && lock)
-		{
-			if (!kill(g_operation.client_pid, SIGUSR2))
-			{
-				lock = 0;
-			}
-		}	
-	}
-	else
-	{
-		while (lock)
-		{
-			if (!kill(g_operation.client_pid, SIGUSR1))
-			{
-				lock = 0;
-			}
-		}	
-	}
-	return (1);
-}
-
 void
 	get_length(int signo, siginfo_t *info, void *context)
 {
@@ -99,27 +68,30 @@ void
 int
 	main(void)
 {
-	struct sigaction	s_sigaction;
-	struct sigaction	s_sigaction2;
-
-	s_sigaction.sa_sigaction = &get_length;
-	s_sigaction2.sa_sigaction = &alocate_mem;
-	s_sigaction.sa_flags = SA_SIGINFO;
-	s_sigaction2.sa_flags = SA_SIGINFO;
-	sigaction(SIGUSR1, &s_sigaction, 0);
-	sigaction(SIGUSR2, &s_sigaction2, 0);
 	printf("Server PID %d\n", getpid());
 	fflush(stdout);
-	while (g_operation.stage == 0 && send_singal(0))
-		pause();
-	s_sigaction.sa_sigaction = &get_message;
-	s_sigaction2.sa_sigaction = &get_message;
-	sigaction(SIGUSR1, &s_sigaction, 0);
-	sigaction(SIGUSR2, &s_sigaction2, 0);
-	usleep(400);
-	while (g_operation.stage == 1 && send_singal(0))
-		pause();
-	printf("message ->%s\n", g_operation.message);
-	send_singal(0);
+	while (1)
+	{
+		s_sigaction.sa_sigaction = &get_length;
+		s_sigaction2.sa_sigaction = &alocate_mem;
+		s_sigaction.sa_flags = SA_SIGINFO;
+		s_sigaction2.sa_flags = SA_SIGINFO;
+		sigaction(SIGUSR1, &s_sigaction, 0);
+		sigaction(SIGUSR2, &s_sigaction2, 0);
+		while (g_operation.stage == 0)
+		{
+			pause();
+			send_singal(0);
+		}
+		s_sigaction.sa_sigaction = &get_message;
+		sigaction(SIGUSR1, &s_sigaction, 0);
+		sigaction(SIGUSR2, &s_sigaction2, 0);
+		usleep(400);
+		while (g_operation.stage == 1 && send_singal(0))
+			pause();
+		printf("message ->%s\n", g_operation.message);
+		send_singal(0);
+	}
 	return (0);
 }
+

@@ -12,37 +12,6 @@
 
 #include "minitalk.h"
 
-static t_data	g_operation;
-
-int
-	send_singal(int type)
-{
-	int	lock;
-
-	lock = 1;
-	if (type && lock)
-	{
-		while (type && lock)
-		{
-			if (!kill(g_operation.server_pid, SIGUSR2))
-			{
-				lock = 0;
-			}
-		}	
-	}
-	else
-	{
-		while (lock)
-		{
-			if (!kill(g_operation.server_pid, SIGUSR1))
-			{
-				lock = 0;
-			}
-		}	
-	}
-	return (1);
-}
-
 void
 	resume(int signo, siginfo_t *info, void *context)
 {
@@ -88,9 +57,6 @@ void
 int
 	main(int argc, char **argv)
 {
-	struct sigaction	s_sigaction;
-	struct sigaction	s_sigaction2;
-
 	s_sigaction.sa_sigaction = &resume;
 	s_sigaction2.sa_sigaction = &resume;
 	s_sigaction.sa_flags = SA_SIGINFO;

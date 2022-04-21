@@ -1,6 +1,6 @@
 NAME	=	minitalk.a
 
-SRCS	=	server2.c client.c
+SRCS	=	server.c client.c utils.c
 
 OBJS	= ${SRCS:.c=.o}
 
@@ -33,10 +33,10 @@ re:			fclean all
 #personal rules
 
 client: 
-			gcc client.c -o tclient.o
+			gcc client.c utils.c -o tclient.o
 
 server:
-			gcc server.c -o tserver.o
+			gcc server.c utils.c -o tserver.o
 
 k: fclean client server
 

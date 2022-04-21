@@ -33,11 +33,17 @@ typedef struct s_operation_db
 	int		shift_count;
 }			t_data;
 
+static t_data	g_operation;
+
+static struct sigaction	s_sigaction;
+static struct sigaction	s_sigaction2;
+
 int		send_singal(int type);
 void	send_char(char *string, int message_length);
 void	resume(int signo, siginfo_t *info, void *context);
 void	get_length(int signo, siginfo_t *info, void *context);
 void	alocate_mem(int signo, siginfo_t *info, void *context);
 void	get_message(int signo, siginfo_t *info, void *context);
+void	*ft_calloc(size_t nmemb, size_t size);
 
 #endif
