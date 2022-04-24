@@ -32,38 +32,16 @@ void
 	return (pointer);
 }
 
-int
-	send_singal(int type)
-{
-	int	lock;
-
-	lock = 1;
-	if (type && lock)
-	{
-		while (type && lock)
-			if (!kill(g_operation.client_pid, SIGUSR2))
-				lock = 0;
-	}
-	else
-	{
-		while (lock)
-			if (!kill(g_operation.client_pid, SIGUSR1))
-				lock = 0;
-	}
-	return (1);
-}
-
 void
-	reset(void)
+	reset(t_data *g_operation)
 {
-	g_operation.server_pid = 0;
-	g_operation.context = NULL;
-	g_operation.client_pid = 0;
-	g_operation.message = NULL;
-	g_operation.message_length = 0;
-	g_operation.counter = 0;
-	g_operation.shift_count = 0;
-	g_operation.stage = 0;
+	g_operation->context = NULL;
+	g_operation->client_pid = 0;
+	g_operation->message = NULL;
+	g_operation->message_length = 0;
+	g_operation->counter = 0;
+	g_operation->shift_count = 0;
+	g_operation->stage = 0;
 	return ;
 }
 

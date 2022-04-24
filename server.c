@@ -12,31 +12,57 @@
 
 #include "minitalk.h"
 
-void
-	get_length(int signo, siginfo_t *info, void *context)
+static t_data	g_operation;
+
+int
+	send_singal(int type)
 {
-	g_operation.message_length++;
-	if (!g_operation.client_pid && signo)
+	int	lock;
+
+	printf("operation cleint pid inside signal => %d \n", g_operation.client_pid);
+	lock = 1;
+	if (type && lock)
 	{
-		g_operation.client_pid = (int) info->si_pid;
-		g_operation.context = context;
+		while (type && lock)
+			if (!kill(g_operation.client_pid, SIGUSR2))
+				lock = 0;
 	}
-	send_singal(0);
+	else
+	{
+		while (lock)
+			if (!kill(g_operation.client_pid, SIGUSR1))
+				lock = 0;
+	}
+	printf("signo type %d \n", type, g_operation.client_pid);
+	fflush(stdout);
+	return (1);
 }
 
 void
-	alocate_mem(int signo, siginfo_t *info, void *context)
+	calloc_memory(int signo, siginfo_t *info, void *context)
 {
-	g_operation.message = calloc(g_operation.message_length + 1, sizeof(char));
-	g_operation.stage++;
-	g_operation.client_pid = info->si_pid;
-	if (!g_operation.client_pid && signo)
+	printf("Enterign calloc_memory function with signo => %d \n", signo);
+	fflush(stdout);
+	if (!g_operation.client_pid)
 	{
 		g_operation.client_pid = (int) info->si_pid;
+		printf("assigning client pid=> %d\n", g_operation.client_pid);
+		fflush(stdout);
 		g_operation.context = context;
 	}
-	printf("Done alocating %d Bytes\n", g_operation.message_length + 1);
-	send_singal(0);
+	if (signo == SIGUSR2)
+	{
+		printf("getting length ++\n");
+		fflush(stdout);
+		g_operation.message_length++;
+	}
+	else
+	{	
+		g_operation.message = calloc(g_operation.message_length + 1, sizeof(char));
+		g_operation.stage++;
+		printf("Alocating memory\n");
+		fflush(stdout);
+	}
 }
 
 void
@@ -70,26 +96,34 @@ int
 {
 	printf("Server PID %d\n", getpid());
 	fflush(stdout);
+	static struct sigaction	s_sigaction;
+	static struct sigaction	s_sigaction2;
 	while (1)
 	{
-		s_sigaction.sa_sigaction = &get_length;
-		s_sigaction2.sa_sigaction = &alocate_mem;
+		reset(&g_operation);
+		s_sigaction.sa_sigaction = &calloc_memory;
 		s_sigaction.sa_flags = SA_SIGINFO;
 		s_sigaction2.sa_flags = SA_SIGINFO;
 		sigaction(SIGUSR1, &s_sigaction, 0);
-		sigaction(SIGUSR2, &s_sigaction2, 0);
+		sigaction(SIGUSR2, &s_sigaction, 0);
 		while (g_operation.stage == 0)
 		{
+			printf("pausing\n");
+			fflush(stdout);
+			usleep(500);
 			pause();
 			send_singal(0);
 		}
+		printf("done with length and memory\n");
 		s_sigaction.sa_sigaction = &get_message;
 		sigaction(SIGUSR1, &s_sigaction, 0);
-		sigaction(SIGUSR2, &s_sigaction2, 0);
+		sigaction(SIGUSR2, &s_sigaction, 0);
 		usleep(400);
 		while (g_operation.stage == 1 && send_singal(0))
 			pause();
-		printf("message ->%s\n", g_operation.message);
+		
+		printf(">> message >>>%d<<<\n", g_operation.message);
+		fflush(stdout);
 		send_singal(0);
 	}
 	return (0);

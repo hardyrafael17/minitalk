@@ -23,17 +23,14 @@
 
 typedef struct s_operation_db
 {
-	int		server_pid;
-	void	*context;
 	int		client_pid;
 	char	*message;
 	int		message_length;
 	int		counter;
 	int		stage;
 	int		shift_count;
+	void	*context;
 }			t_data;
-
-static t_data	g_operation;
 
 static struct sigaction	s_sigaction;
 static struct sigaction	s_sigaction2;
@@ -45,5 +42,6 @@ void	get_length(int signo, siginfo_t *info, void *context);
 void	alocate_mem(int signo, siginfo_t *info, void *context);
 void	get_message(int signo, siginfo_t *info, void *context);
 void	*ft_calloc(size_t nmemb, size_t size);
+void	reset(t_data *g_operation);
 
 #endif
