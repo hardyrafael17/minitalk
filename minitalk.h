@@ -32,9 +32,6 @@ typedef struct s_operation_db
 	void	*context;
 }			t_data;
 
-static struct sigaction	s_sigaction;
-static struct sigaction	s_sigaction2;
-
 int		send_singal(int type);
 void	send_char(char *string, int message_length);
 void	resume(int signo, siginfo_t *info, void *context);
