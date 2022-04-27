@@ -42,6 +42,7 @@ int
 			}
 		}
 	}
+	return (1);
 }
 
 void

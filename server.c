@@ -57,7 +57,6 @@ void
 	g_operation.shift_count++;
 	if (g_operation.shift_count == 8)
 	{
-		write(1, "byte", 4);
 		if (g_operation.message[g_operation.counter] == '\0')
 		{
 			g_operation.stage++;
