@@ -6,49 +6,30 @@
 /*   By: hardy <hardy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 19:17:39 by hardy             #+#    #+#             */
-/*   Updated: 2022/04/24 17:00:53 by hardy            ###   ########.fr       */
+/*   Updated: 2022/04/30 04:59:27 by hardy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-static t_data	g_operation;
+t_data	g_operation;
 
-int
-	send_singal(int type)
+static
+	void	send_length(int length)
 {
-	int	lock;
-	int test;
-
-	lock = 1;
-	if(type == 1)
+	while (length--)
 	{
-		while (lock)
-		{
-			if(!kill(g_operation.client_pid, SIGUSR2));
-			{
-				lock = 0;
-			}
-		}
+		send_singal(1, g_operation.client_pid);
+		pause();
 	}
-	else
-
-	{
-		while (lock)
-		{
-			if(!kill(g_operation.client_pid, SIGUSR1));
-			{
-				lock = 0;
-			}
-		}
-	}
-	return (1);
+	send_singal(0, g_operation.client_pid);
+	pause();
 }
 
 void
 	resume(int signo, siginfo_t *info, void *context)
 {
-   	if (!g_operation.context && signo)
+	if (!g_operation.context && signo)
 	{
 		g_operation.context = context;
 		g_operation.client_pid = info->si_pid;
@@ -57,7 +38,7 @@ void
 }
 
 void
-	send_char(char *string, int message_length)
+	send_message(char *string)
 {
 	while (string && string[g_operation.counter])
 	{
@@ -65,32 +46,21 @@ void
 		while (g_operation.shift_count--)
 		{
 			if (string[g_operation.counter] >> g_operation.shift_count & 1)
-				send_singal(1);
+				send_singal(1, g_operation.client_pid);
 			else
-				send_singal(0);
+				send_singal(0, g_operation.client_pid);
 			pause();
 		}
 		++g_operation.counter;
 	}
-	if (string && !message_length)
+	if (string)
 	{
-		write(1, "he", 2);
 		g_operation.shift_count = 8;
-		while (g_operation.shift_count-- && send_singal(0))
-		{
-			write(1, "0", 1);
+		while (g_operation.shift_count-- && \
+		send_singal(0, g_operation.client_pid))
 			pause();
-		}
 		return ;
 	}
-	while (g_operation.message_length-- && message_length)
-	{
-		send_singal(1);
-		pause();
-	}
-	send_singal(0);
-	pause();
-	return ;
 }
 
 int
@@ -101,20 +71,19 @@ int
 
 	s_sigaction.sa_sigaction = &resume;
 	s_sigaction2.sa_sigaction = &resume;
-	
 	s_sigaction.sa_flags = SA_SIGINFO;
 	sigaction(SIGUSR1, &s_sigaction, 0);
 	sigaction(SIGUSR2, &s_sigaction2, 0);
 	if (argc != 3 || !strlen(argv[2]))
 	{
-		printf("Argument count %d\n", argc);
+		ft_write("Check arguments, Usage: ./client <server_pid> <message>");
 		return (1);
 	}
 	g_operation.client_pid = atoi(argv[1]);
 	g_operation.message = argv[2];
 	g_operation.message_length = strlen(g_operation.message);
-	send_char(NULL, 1);
+	send_length(g_operation.message_length);
 	pause();
-	send_char(g_operation.message, 0);
+	send_message(g_operation.message);
 	return (0);
 }

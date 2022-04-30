@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hjimenez <hjimenez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hardy <hardy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/27 18:39:39 by hjimenez          #+#    #+#             */
-/*   Updated: 2022/02/28 16:59:26 by hjimenez         ###   ########.fr       */
+/*   Updated: 2022/04/30 04:56:43 by hardy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,16 +32,47 @@ void
 	return (pointer);
 }
 
-void
-	reset(t_data *g_operation)
+int
+	send_singal(int type, int pid)
 {
-	g_operation->context = NULL;
-	g_operation->client_pid = 0;
-	g_operation->message = NULL;
-	g_operation->message_length = 0;
-	g_operation->counter = 0;
-	g_operation->shift_count = 0;
-	g_operation->stage = 0;
-	return ;
+	int	lock;
+	int	test;
+
+	lock = 1;
+	if (type == 1)
+	{
+		while (lock)
+		{
+			if (!kill(pid, SIGUSR2))
+			{
+				lock = 0;
+			}
+		}
+	}
+	else
+	{
+		while (lock)
+		{
+			if (!kill(pid, SIGUSR1))
+			{
+				lock = 0;
+			}
+		}
+	}
+	return (1);
 }
 
+void	ft_write(char *string)
+{
+	int	i;
+
+	i = 0;
+	if (!string)
+		return ;
+	while (string[i])
+	{
+		write(1, &string[i], 1);
+		++i;
+	}
+	write(1, "\n", 1);
+}	
