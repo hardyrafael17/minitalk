@@ -33,10 +33,10 @@ re:			fclean all
 #personal rules
 
 client: 
-			gcc client.c utils.c -o tclient.o
+			gcc -g client.c utils.c -o tclient.o
 
 server:
-			gcc server.c utils.c -o tserver.o
+			gcc -g server.c utils.c -o tserver.o
 
 k: fclean client server
 
