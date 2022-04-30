@@ -6,7 +6,7 @@
 /*   By: hardy <hardy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 18:49:00 by hardy             #+#    #+#             */
-/*   Updated: 2022/04/30 16:24:51 by hardy            ###   ########.fr       */
+/*   Updated: 2022/04/30 23:36:56 by hardy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void
 void
 	operate(void)
 {
-	static struct sigaction	s_sigaction;
+	struct sigaction	s_sigaction;
 
 	s_sigaction.sa_sigaction = &calloc_memory;
 	s_sigaction.sa_flags = SA_SIGINFO;

@@ -6,7 +6,7 @@
 /*   By: hardy <hardy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 19:17:39 by hardy             #+#    #+#             */
-/*   Updated: 2022/04/30 04:59:27 by hardy            ###   ########.fr       */
+/*   Updated: 2022/04/30 23:33:38 by hardy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,8 @@ void
 int
 	main(int argc, char **argv)
 {
-	static struct sigaction	s_sigaction;
-	static struct sigaction	s_sigaction2;
+	struct sigaction	s_sigaction;
+	struct sigaction	s_sigaction2;
 
 	s_sigaction.sa_sigaction = &resume;
 	s_sigaction2.sa_sigaction = &resume;
