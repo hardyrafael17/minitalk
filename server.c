@@ -6,7 +6,7 @@
 /*   By: hardy <hardy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 18:49:00 by hardy             #+#    #+#             */
-/*   Updated: 2022/04/30 05:01:47 by hardy            ###   ########.fr       */
+/*   Updated: 2022/04/30 16:24:51 by hardy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ void
 	}
 	else
 	{	
-		g_operation.message = ft_calloc(g_operation.message_length + 1, sizeof(char));
+		g_operation.message = \
+		ft_calloc(g_operation.message_length + 1, sizeof(char));
 		g_operation.stage++;
 	}
 }
@@ -59,14 +60,13 @@ void
 	}
 }
 
-static void	operate(void)
+void
+	operate(void)
 {
 	static struct sigaction	s_sigaction;
-	static struct sigaction	s_sigaction2;
 
 	s_sigaction.sa_sigaction = &calloc_memory;
 	s_sigaction.sa_flags = SA_SIGINFO;
-	s_sigaction2.sa_flags = SA_SIGINFO;
 	sigaction(SIGUSR1, &s_sigaction, 0);
 	sigaction(SIGUSR2, &s_sigaction, 0);
 	while (g_operation.stage == 0)

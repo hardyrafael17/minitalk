@@ -6,7 +6,7 @@
 /*   By: hardy <hardy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 18:42:55 by hardy             #+#    #+#             */
-/*   Updated: 2022/04/30 04:55:31 by hardy            ###   ########.fr       */
+/*   Updated: 2022/04/30 16:31:42 by hardy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ typedef struct s_operation_db
 	void	*context;
 }			t_data;
 
+void	operate(void);
 void	ft_write(char *string);
 int		send_singal(int type, int pid);
 void	send_message(char *string);

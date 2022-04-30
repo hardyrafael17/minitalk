@@ -6,7 +6,7 @@
 /*   By: hardy <hardy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/27 18:39:39 by hjimenez          #+#    #+#             */
-/*   Updated: 2022/04/30 04:56:43 by hardy            ###   ########.fr       */
+/*   Updated: 2022/04/30 05:22:37 by hardy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ int
 	send_singal(int type, int pid)
 {
 	int	lock;
-	int	test;
 
 	lock = 1;
 	if (type == 1)
