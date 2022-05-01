@@ -6,7 +6,7 @@
 /*   By: hardy <hardy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 18:49:00 by hardy             #+#    #+#             */
-/*   Updated: 2022/04/30 23:36:56 by hardy            ###   ########.fr       */
+/*   Updated: 2022/05/01 02:26:48 by hardy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,8 @@ void
 		g_operation.shift_count = 0;
 		g_operation.counter++;
 	}
-	if (!g_operation.client_pid && signo)
+	if (!g_operation.client_pid && signo && !info)
 	{
-		g_operation.client_pid = (int) info->si_pid;
 		g_operation.context = context;
 	}
 }
@@ -79,7 +78,9 @@ void
 	sigaction(SIGUSR2, &s_sigaction, 0);
 	usleep(100);
 	while (g_operation.stage == 1 && send_singal(0, g_operation.client_pid))
+	{
 		pause();
+	}
 	ft_write(g_operation.message);
 	free(g_operation.message);
 	send_singal(0, g_operation.client_pid);

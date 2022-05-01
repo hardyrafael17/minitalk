@@ -7,3 +7,6 @@ tserver.o
 tclient.o
 .vscode
 build
+client.o
+server.o
+utils.o
