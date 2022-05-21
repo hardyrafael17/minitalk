@@ -5,3 +5,8 @@ a.out
 minitalk.a
 tserver.o
 tclient.o
+.vscode
+build
+client.o
+server.o
+utils.o

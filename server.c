@@ -6,7 +6,7 @@
 /*   By: hardy <hardy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 18:49:00 by hardy             #+#    #+#             */
-/*   Updated: 2022/04/30 05:01:47 by hardy            ###   ########.fr       */
+/*   Updated: 2022/05/01 02:26:48 by hardy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ void
 	}
 	else
 	{	
-		g_operation.message = ft_calloc(g_operation.message_length + 1, sizeof(char));
+		g_operation.message = \
+		ft_calloc(g_operation.message_length + 1, sizeof(char));
 		g_operation.stage++;
 	}
 }
@@ -52,21 +53,19 @@ void
 		g_operation.shift_count = 0;
 		g_operation.counter++;
 	}
-	if (!g_operation.client_pid && signo)
+	if (!g_operation.client_pid && signo && !info)
 	{
-		g_operation.client_pid = (int) info->si_pid;
 		g_operation.context = context;
 	}
 }
 
-static void	operate(void)
+void
+	operate(void)
 {
-	static struct sigaction	s_sigaction;
-	static struct sigaction	s_sigaction2;
+	struct sigaction	s_sigaction;
 
 	s_sigaction.sa_sigaction = &calloc_memory;
 	s_sigaction.sa_flags = SA_SIGINFO;
-	s_sigaction2.sa_flags = SA_SIGINFO;
 	sigaction(SIGUSR1, &s_sigaction, 0);
 	sigaction(SIGUSR2, &s_sigaction, 0);
 	while (g_operation.stage == 0)
@@ -79,7 +78,9 @@ static void	operate(void)
 	sigaction(SIGUSR2, &s_sigaction, 0);
 	usleep(100);
 	while (g_operation.stage == 1 && send_singal(0, g_operation.client_pid))
+	{
 		pause();
+	}
 	ft_write(g_operation.message);
 	free(g_operation.message);
 	send_singal(0, g_operation.client_pid);
