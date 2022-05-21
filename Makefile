@@ -1,9 +1,39 @@
+# Files...
+SERVER		=	server.c
+
+CLIENT		=	client.c
+
+LIBFT		=	cd libft && make
+
+LIB			=	libft/libft.a
+
 NAME	=	minitalk.a
 
-SRCS	=	server.c client.c utils.c
+# Sources and objects...
+SERVER_SRC	=	$(SERVER)
 
-OBJS	= ${SRCS:.c=.o}
+SERVER_OBJS	=	$(SERVER_SRC:.c=.o)
 
+CLIENT_SRC	=	$(CLIENT)
+
+CLIENT_OBJS	=	$(CLIENT_SRC:.c=.o)
+
+OBJS		=	$(CLIENT_OBJS) \
+				$(SERVER_OBJS)
+
+# Literals
+
+GCC			=	gcc
+
+FLAGS		=	-Wall -Wextra -Werror
+
+INCLUDE		=	-I include
+
+SERVER_NAME	=	server
+
+CLIENT_NAME	=	client
+
+NAME		=	server
 CC		= gcc
 
 RM		= rm -rf
@@ -13,6 +43,8 @@ AR		= ar rcs
 CFLAGS = -Wall -Werror -Wextra
 
 XFLAGS = -o
+
+# Rules
 
 all	:		$(NAME)
 
@@ -30,14 +62,35 @@ fclean:		clean
 
 re:			fclean all
 
-#personal rules
+all: $(NAME)
 
-client: 
-			gcc -g client.c utils.c -o tclient.o
+$(NAME): comp_start ft_server ft_client
 
-server:
-			gcc -g server.c utils.c -o tserver.o
+comp_start:
+	@$(COMP_START)
+	@$(LIBFT)
 
-k: fclean client server
+ft_server: $(SERVER_OBJS)
+	@$(GCC) $(FLAGS) $(SERVER_OBJS) $(LIB) -o $(SERVER_NAME)
+	@$(SERV_READY)
 
-.PHONY:		all clean fclean re bonus
+ft_client: $(CLIENT_OBJS)
+	@$(GCC) $(FLAGS) $(CLIENT_OBJS) $(LIB) -o $(CLIENT_NAME)
+	@$(CLI_READY)
+
+clean:
+	@rm -rf $(OBJS)
+	@cd libft && make clean
+	@$(CLEANED)
+
+fclean: clean
+	@rm -rf $(SERVER_NAME) $(CLIENT_NAME)
+	@cd libft && make fclean
+	@$(FCLEANED)
+
+.c.o:
+	@${GCC} ${FLAGS} $(INCLUDE) -c $< -o ${<:.c=.o}
+
+re:	fclean all
+
+.PHONY: all minitalk server client clean fclean re libft

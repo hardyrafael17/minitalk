@@ -3,34 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hardy <hardy@student.42.fr>                +#+  +:+       +#+        */
+/*   By: hjimenez <hjimenez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/27 18:39:39 by hjimenez          #+#    #+#             */
-/*   Updated: 2022/05/18 22:19:39 by hardy            ###   ########.fr       */
+/*   Updated: 2022/05/21 18:08:49 by hjimenez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
-
-void
-	*ft_calloc(size_t nmemb, size_t size)
-{
-	char	*pointer;
-	size_t	nbytes;
-	size_t	i;
-
-	i = 0;
-	nbytes = size * nmemb;
-	pointer = malloc(nbytes);
-	if (!pointer)
-		return (NULL);
-	while (i < nbytes)
-	{
-		*(pointer + i) = (char) '\0';
-		i++;
-	}
-	return (pointer);
-}
 
 int
 	send_singal(int type, int pid)
@@ -62,7 +42,8 @@ int
 	return (1);
 }
 
-void	ft_write(char *string)
+void
+	ft_write(char *string)
 {
 	int	i;
 
@@ -76,5 +57,4 @@ void	ft_write(char *string)
 	}
 	write(1, "\n", 1);
 	fflush(stdout);
-	usleep(400);
-}	
+}

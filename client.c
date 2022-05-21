@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hardy <hardy@student.42.fr>                +#+  +:+       +#+        */
+/*   By: hjimenez <hjimenez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 19:17:39 by hardy             #+#    #+#             */
-/*   Updated: 2022/04/30 23:33:38 by hardy            ###   ########.fr       */
+/*   Updated: 2022/05/21 17:51:25 by hjimenez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int
 	sigaction(SIGUSR2, &s_sigaction2, 0);
 	if (argc != 3 || !strlen(argv[2]))
 	{
-		ft_write("Check arguments, Usage: ./client <server_pid> <message>");
+		ft_printf("Check arguments, Usage: ./client <server_pid> <message>");
 		return (1);
 	}
 	g_operation.client_pid = atoi(argv[1]);

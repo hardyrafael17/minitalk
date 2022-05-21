@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hardy <hardy@student.42.fr>                +#+  +:+       +#+        */
+/*   By: hjimenez <hjimenez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 18:49:00 by hardy             #+#    #+#             */
-/*   Updated: 2022/05/01 02:26:48 by hardy            ###   ########.fr       */
+/*   Updated: 2022/05/21 17:50:47 by hjimenez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,8 @@ void
 	{
 		pause();
 	}
-	ft_write(g_operation.message);
+	ft_printf(g_operation.message);
+	usleep(400);
 	free(g_operation.message);
 	send_singal(0, g_operation.client_pid);
 }

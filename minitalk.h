@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minitalk.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hardy <hardy@student.42.fr>                +#+  +:+       +#+        */
+/*   By: hjimenez <hjimenez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 18:42:55 by hardy             #+#    #+#             */
-/*   Updated: 2022/04/30 23:36:24 by hardy            ###   ########.fr       */
+/*   Updated: 2022/05/21 18:07:01 by hjimenez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 # include <unistd.h>
 # include <string.h>
 # include <stdio.h>
+# include "./libft/libft.h"
+# include "./printf/ft_printf.h"
 
 typedef struct s_operation_db
 {
@@ -33,7 +35,6 @@ typedef struct s_operation_db
 }			t_data;
 
 void	operate(void);
-void	ft_write(char *string);
 int		send_singal(int type, int pid);
 void	send_message(char *string);
 void	resume(int signo, siginfo_t *info, void *context);
