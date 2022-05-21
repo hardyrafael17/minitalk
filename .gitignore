@@ -10,3 +10,5 @@ build
 client.o
 server.o
 utils.o
+simple.sh
+README.md
