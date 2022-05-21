@@ -6,7 +6,7 @@
 /*   By: hjimenez <hjimenez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 18:42:55 by hardy             #+#    #+#             */
-/*   Updated: 2022/05/21 18:07:01 by hjimenez         ###   ########.fr       */
+/*   Updated: 2022/05/21 18:59:39 by hjimenez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@
 # include <string.h>
 # include <stdio.h>
 # include "./libft/libft.h"
-# include "./printf/ft_printf.h"
 
 typedef struct s_operation_db
 {
@@ -35,13 +34,10 @@ typedef struct s_operation_db
 }			t_data;
 
 void	operate(void);
-int		send_singal(int type, int pid);
-void	send_message(char *string);
+void	ft_write(char *string);
 void	resume(int signo, siginfo_t *info, void *context);
-void	get_length(int signo, siginfo_t *info, void *context);
 void	alocate_mem(int signo, siginfo_t *info, void *context);
 void	get_message(int signo, siginfo_t *info, void *context);
-void	*ft_calloc(size_t nmemb, size_t size);
 void	reset(t_data *g_operation);
 
 #endif

@@ -6,13 +6,43 @@
 /*   By: hjimenez <hjimenez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 18:49:00 by hardy             #+#    #+#             */
-/*   Updated: 2022/05/21 17:50:47 by hjimenez         ###   ########.fr       */
+/*   Updated: 2022/05/21 19:56:48 by hjimenez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
 t_data	g_operation;
+
+int
+	send_signal(int type, int pid)
+{
+	int	lock;
+
+	lock = 1;
+	usleep(200);
+	if (type == 1)
+	{
+		while (lock)
+		{
+			if (!kill(pid, SIGUSR2))
+			{
+				lock = 0;
+			}
+		}
+	}
+	else
+	{
+		while (lock)
+		{
+			if (!kill(pid, SIGUSR1))
+			{
+				lock = 0;
+			}
+		}
+	}
+	return (1);
+}
 
 void
 	calloc_memory(int signo, siginfo_t *info, void *context)
@@ -71,27 +101,31 @@ void
 	while (g_operation.stage == 0)
 	{
 		pause();
-		send_singal(0, g_operation.client_pid);
+		send_signal(0, g_operation.client_pid);
 	}
 	s_sigaction.sa_sigaction = &get_message;
 	sigaction(SIGUSR1, &s_sigaction, 0);
 	sigaction(SIGUSR2, &s_sigaction, 0);
 	usleep(100);
-	while (g_operation.stage == 1 && send_singal(0, g_operation.client_pid))
+	while (g_operation.stage == 1 && send_signal(0, g_operation.client_pid))
 	{
 		pause();
 	}
-	ft_printf(g_operation.message);
+	ft_write(g_operation.message);
 	usleep(400);
 	free(g_operation.message);
-	send_singal(0, g_operation.client_pid);
+	send_signal(0, g_operation.client_pid);
 }
 
 int
 	main(void)
 {
-	printf("Server pid => %d\n", getpid());
-	fflush(stdout);
+	int	server_pid;
+
+	server_pid = getpid();
+	ft_write("Server PID");
+	ft_putnbr_fd(server_pid, 1);
+	ft_putchar_fd('\n', 1);
 	usleep(100);
 	while (1)
 	{

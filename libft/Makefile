@@ -6,7 +6,7 @@
 #    By: hjimenez <hjimenez@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/09 17:38:03 by jpineiro          #+#    #+#              #
-#    Updated: 2021/11/16 18:57:42 by hjimenez         ###   ########.fr        #
+#    Updated: 2022/05/21 18:53:41 by hjimenez         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,6 +46,7 @@ SRCS_MAND	=	ft_isalpha.c		\
 				ft_strtrim.c		\
 				ft_split.c			\
 				ft_putnbr_fd.c		\
+				ft_write.c
 
 
 SRCS_BON	=	ft_lstnew_bonus.c			\

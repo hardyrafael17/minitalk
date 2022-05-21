@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hjimenez <hjimenez@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: hjimenez <hjimenez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/11 13:03:04 by adiaz-lo          #+#    #+#             */
-/*   Updated: 2021/11/12 16:20:19 by hjimenez         ###   ########.fr       */
+/*   Updated: 2022/05/21 18:54:42 by hjimenez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,4 +66,6 @@ void	ft_lstclear(t_list **lst, void (*del)(void*));
 void	ft_lstiter(t_list *lst, void (*f)(void *));
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void*), void (*del)(void *));
+void	ft_write(char *string);
+
 #endif

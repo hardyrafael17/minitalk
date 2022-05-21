@@ -1,6 +1,5 @@
 # Files...
 SERVER		=	server.c
-
 CLIENT		=	client.c
 
 LIBFT		=	cd libft && make
@@ -33,9 +32,6 @@ SERVER_NAME	=	server
 
 CLIENT_NAME	=	client
 
-NAME		=	server
-CC		= gcc
-
 RM		= rm -rf
 
 AR		= ar rcs
@@ -46,22 +42,6 @@ XFLAGS = -o
 
 # Rules
 
-all	:		$(NAME)
-
-$(NAME)	:	$(OBJS) 
-			@$(AR) $(NAME) $(OBJS)
-
-%.o:		%.c
-			@$(CC) $(CFLAGS) -c $< -o $@
-
-clean:	
-			@$(RM) ${OBJS}
-
-fclean:		clean
-			@$(RM) $(NAME)
-
-re:			fclean all
-
 all: $(NAME)
 
 $(NAME): comp_start ft_server ft_client
@@ -71,22 +51,18 @@ comp_start:
 	@$(LIBFT)
 
 ft_server: $(SERVER_OBJS)
-	@$(GCC) $(FLAGS) $(SERVER_OBJS) $(LIB) -o $(SERVER_NAME)
-	@$(SERV_READY)
+	@$(GCC) $(FLAGS) $(LIB) $(SERVER_OBJS)  -o $(SERVER_NAME)
 
 ft_client: $(CLIENT_OBJS)
-	@$(GCC) $(FLAGS) $(CLIENT_OBJS) $(LIB) -o $(CLIENT_NAME)
-	@$(CLI_READY)
+	@$(GCC) $(FLAGS) $(LIB) $(CLIENT_OBJS)  -o $(CLIENT_NAME)
 
 clean:
 	@rm -rf $(OBJS)
-	@cd libft && make clean
-	@$(CLEANED)
+	cd libft && make clean
 
 fclean: clean
-	@rm -rf $(SERVER_NAME) $(CLIENT_NAME)
+	@rm -rf $(SERVER_NAME) $(CLIENT_NAME) minitalk.a
 	@cd libft && make fclean
-	@$(FCLEANED)
 
 .c.o:
 	@${GCC} ${FLAGS} $(INCLUDE) -c $< -o ${<:.c=.o}
